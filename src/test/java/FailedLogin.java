@@ -8,7 +8,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 
 import java.util.concurrent.TimeUnit;
 
-public class Login {
+public class FailedLogin {
 
     @Test // add Test tag from Junit as runner to run the test
     public void main() {
@@ -24,13 +24,15 @@ public class Login {
         driver.manage().window().maximize(); // maximize window
         driver.get(baseUrl); // access base url
 
-        driver.findElement(By.id("email")).sendKeys("tdd-selenium@gmail.com");
-        driver.findElement(By.id("password")).sendKeys("tdd-selenium");
+        // login using unregistered credential
+        driver.findElement(By.id("email")).sendKeys("failed-login@gmail.com");
+        driver.findElement(By.id("password")).sendKeys("failed-login");
         driver.findElement(By.xpath("//button[@type='submit']")).click();
 
-        driver.findElement(By.xpath("//div[contains(text(),'dashboard')]"));
-        String username = driver.findElement(By.xpath("//dd[contains(text(),'hai')]/preceding-sibling::dt")).getText();
-        Assert.assertEquals(username, "tdd-selenium");
+        // assert error message
+        String errorLogin = driver.findElement(By.xpath("//div[@role='alert']")).getText();
+        Assert.assertEquals(errorLogin, "Kredensial yang Anda berikan salah");
+
     }
 
 }
